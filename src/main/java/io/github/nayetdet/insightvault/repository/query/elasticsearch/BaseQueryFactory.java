@@ -3,6 +3,7 @@ package io.github.nayetdet.insightvault.repository.query.elasticsearch;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class BaseQueryFactory {
@@ -15,7 +16,7 @@ public class BaseQueryFactory {
                 .range(r -> r
                         .date(d -> d
                                 .field("createdAt")
-                                .lte(createdBefore.atStartOfDay().format(DateTimeFormatter.ISO_DATE_TIME))
+                                .lte(createdBefore.atTime(LocalTime.MAX).format(DateTimeFormatter.ISO_DATE_TIME))
                         )
                 )
         );

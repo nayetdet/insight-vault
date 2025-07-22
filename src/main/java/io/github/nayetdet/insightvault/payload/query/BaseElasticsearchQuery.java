@@ -23,13 +23,13 @@ public abstract class BaseElasticsearchQuery extends BaseQuery {
     }
 
     public Query getQuery() {
-        List<Query> queries = getQueries();
+        List<Query> queries = getQueryList();
         return queries.isEmpty()
                 ? Query.of(q -> q.matchAll(m -> m))
                 : Query.of(q -> q.bool(b -> b.must(queries)));
     }
 
-    protected List<Query> getQueries() {
+    protected List<Query> getQueryList() {
         List<Query> queries = new ArrayList<>();
         if (getCreatedBefore() != null) queries.add(createdBefore(getCreatedBefore()));
         if (getCreatedAfter() != null) queries.add(createdAfter(getCreatedAfter()));

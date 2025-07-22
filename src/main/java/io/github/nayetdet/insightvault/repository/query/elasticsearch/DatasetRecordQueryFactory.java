@@ -7,7 +7,7 @@ public class DatasetRecordQueryFactory {
     private DatasetRecordQueryFactory() {
     }
 
-    public static Query datasetIdEqual(Long datasetId) {
+    public static Query datasetIdEquals(Long datasetId) {
         return Query.of(q -> q
                 .term(t -> t
                         .field("datasetId")

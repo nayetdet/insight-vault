@@ -1,6 +1,7 @@
 package io.github.nayetdet.insightvault.payload.query;
 
 import io.github.nayetdet.insightvault.model.User;
+import io.github.nayetdet.insightvault.model.enums.UserRole;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,23 +18,26 @@ public class UserQuery extends BaseJpaSpecificationQuery<User> {
 
     private String username;
     private String name;
-
-    @Override
-    public Specification<User> getSpecification() {
-        Specification<User> specs = super.getSpecification();
-        if (StringUtils.isNotBlank(username)) specs = specs.and(usernameContains(username));
-        if (StringUtils.isNotBlank(name)) specs = specs.and(nameContains(name));
-        return specs;
-    }
+    private UserRole role;
 
     public UserQuery() {
         super(Map.of(
             "id", "id",
             "username", "username",
             "name", "name",
+            "role", "role",
             "createdAt", "createdAt",
             "updatedAt", "updatedAt"
         ));
+    }
+
+    @Override
+    public Specification<User> getSpecification() {
+        Specification<User> specs = super.getSpecification();
+        if (StringUtils.isNotBlank(username)) specs = specs.and(usernameContains(username));
+        if (StringUtils.isNotBlank(name)) specs = specs.and(nameContains(name));
+        if (role != null) specs = specs.and(roleEquals(role));
+        return specs;
     }
 
     @Override
@@ -43,11 +47,13 @@ public class UserQuery extends BaseJpaSpecificationQuery<User> {
                     "id",
                     "username",
                     "name",
+                    "role",
                     "createdAt",
                     "updatedAt",
                     "-id",
                     "-username",
                     "-name",
+                    "-role",
                     "-createdAt",
                     "-updatedAt"
             }

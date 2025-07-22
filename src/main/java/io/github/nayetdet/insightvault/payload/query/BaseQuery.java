@@ -58,11 +58,11 @@ public abstract class BaseQuery {
     private LocalDate createdAfter;
 
     public Sort getSort() {
-        Sort.Direction direction = getOrderBy().startsWith("-")
+        Sort.Direction direction = orderBy.startsWith("-")
                 ? Sort.Direction.DESC
                 : Sort.Direction.ASC;
 
-        String field = getOrderBy().replaceFirst("^-", "");
+        String field = orderBy.replaceFirst("^-", "");
         return Sort.by(direction, sortableFields.getOrDefault(field, "id"));
     }
 

@@ -13,4 +13,9 @@ public class InsightSpecificationFactory {
                 cb.like(cb.upper(root.get("username")), "%" + username.toUpperCase() + "%");
     }
 
+    public static Specification<Insight> recordIdEquals(String recordId) {
+        return (root, query, cb) ->
+                cb.equal(root.get("recordId"), recordId);
+    }
+
 }

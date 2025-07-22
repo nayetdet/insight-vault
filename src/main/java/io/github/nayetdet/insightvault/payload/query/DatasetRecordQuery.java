@@ -18,14 +18,6 @@ public class DatasetRecordQuery extends BaseElasticsearchQuery {
     private Long datasetId;
     private String keyword;
 
-    @Override
-    protected List<Query> getQueries() {
-        List<Query> queries = super.getQueries();
-        if (datasetId != null) queries.add(datasetIdEqual(datasetId));
-        if (StringUtils.isNotBlank(keyword)) queries.add(keywordContains(keyword));
-        return queries;
-    }
-
     public DatasetRecordQuery() {
         super(Map.of(
                 "id", "id",
@@ -33,6 +25,14 @@ public class DatasetRecordQuery extends BaseElasticsearchQuery {
                 "createdAt", "createdAt",
                 "updatedAt", "updatedAt"
         ));
+    }
+
+    @Override
+    protected List<Query> getQueryList() {
+        List<Query> queries = super.getQueryList();
+        if (datasetId != null) queries.add(datasetIdEquals(datasetId));
+        if (StringUtils.isNotBlank(keyword)) queries.add(keywordContains(keyword));
+        return queries;
     }
 
     @Override

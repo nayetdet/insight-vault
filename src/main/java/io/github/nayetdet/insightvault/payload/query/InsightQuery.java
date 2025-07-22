@@ -15,22 +15,25 @@ import static io.github.nayetdet.insightvault.repository.query.jpa.specification
 @Setter
 public class InsightQuery extends BaseJpaSpecificationQuery<Insight> {
 
+    private String recordId;
     private String username;
-
-    @Override
-    public Specification<Insight> getSpecification() {
-        Specification<Insight> specs = super.getSpecification();
-        if (StringUtils.isNotBlank(username)) specs = specs.and(usernameContains(username));
-        return specs;
-    }
 
     public InsightQuery() {
         super(Map.of(
                 "id", "id",
-                "username", "username",
+                "recordId", "recordId",
+                "username", "user.username",
                 "createdAt", "createdAt",
                 "updatedAt", "updatedAt"
         ));
+    }
+
+    @Override
+    public Specification<Insight> getSpecification() {
+        Specification<Insight> specs = super.getSpecification();
+        if (StringUtils.isNotBlank(recordId)) specs = specs.and(recordIdEquals(recordId));
+        if (StringUtils.isNotBlank(username)) specs = specs.and(usernameContains(username));
+        return specs;
     }
 
     @Override
@@ -38,10 +41,12 @@ public class InsightQuery extends BaseJpaSpecificationQuery<Insight> {
             defaultValue = "id",
             allowableValues = {
                     "id",
+                    "recordId",
                     "username",
                     "createdAt",
                     "updatedAt",
                     "-id",
+                    "-recordId",
                     "-username",
                     "-createdAt",
                     "-updatedAt"
